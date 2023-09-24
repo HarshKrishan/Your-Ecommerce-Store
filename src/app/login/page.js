@@ -10,6 +10,8 @@ import {auth} from '../api/Auth/firebase';
 import Swal from "sweetalert2";
 import {useRouter} from "next/navigation";
 
+import {setSignedIn,setId} from "@/store/slices/userSlice";
+import { useDispatch } from "react-redux";
 export const logout = () => {
   const user =auth.currentUser;
     signOut(auth)
@@ -30,7 +32,7 @@ const LoginPage = () => {
   const [showOTP,setshowOTP] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  
+  const dispatch = useDispatch();
   const verifyOTP = (e) => {
     e.preventDefault();
     if(otp.length===6){
@@ -51,8 +53,9 @@ const LoginPage = () => {
         setotp("");
         setshowOTP(false);
         console.log(auth)
-        // router.push("/");
-
+        router.push("/");
+        dispatch(setSignedIn(true));
+        dispatch(setId(user.uid));
         // ...
       }).catch((error) => {
         // User couldn't sign in (bad verification code?)
@@ -87,6 +90,7 @@ const LoginPage = () => {
     let verifier = window.recaptchaVerifier;
     signInWithPhoneNumber(auth, number, verifier)
     .then((res) => {
+      
       window.confirmationResult = res;
     }).catch((err) => {
       console.log(err);

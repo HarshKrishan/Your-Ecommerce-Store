@@ -4,12 +4,17 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
-import { logout } from "@/app/login/page";
-
+import { setSignedIn } from "@/store/slices/userSlice";
+import {auth} from '@/app/api/Auth/firebase'
+import { signOut } from "firebase/auth";
+import { useDispatch } from "react-redux";
 const Navbar = () => {
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
+  // console.log("user in navbar: ", user);
   const handlesubmit = (e) => {
     if (e.key === "Enter" && query !== "") {
       const temp = query;
@@ -19,16 +24,15 @@ const Navbar = () => {
   };
 
   const signOutUser = async() => {
-    // const auth = getAuth();
-    // signOut(auth).then(() => {
-    //   // Sign-out successful.
-    //   alert("user signed out successfully");
-    // }).catch((error) => {
-    //   alert("error signing out");
-    //   // An error happened.
-    // });
-    await logout();
-    // alert("done!");
+    signOut(auth).then(() => {
+      // Sign-out successful.
+      dispatch(setSignedIn(false));
+      alert("signout successful, user was: ");
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
   };
 
   const counter = useSelector((state) => state.counter.value);
@@ -293,9 +297,17 @@ const Navbar = () => {
                 </span>
               )}
             </li>
-            <button className=" font-bold p-1" onClick={signOutUser}>
-              LogOut
-            </button>
+            {user.isSignedIn ? (
+              <button className=" font-bold p-1" onClick={signOutUser}>
+                LogOut
+              </button>
+            ) : (
+              <button className=" font-bold p-1" onClick={()=>{
+                router.push("/login")
+              }}>
+                LogIn
+              </button>
+            )}
           </ul>
         </div>
       </div>
@@ -489,9 +501,6 @@ const Navbar = () => {
           >
             Groceries
           </li>
-          <button className=" font-bold p-1" onClick={signOutUser}>
-            LogOut
-          </button>
         </ul>
       </div>
     </>
