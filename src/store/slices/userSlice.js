@@ -18,6 +18,9 @@ const userSlice = createSlice({
             state.isSignedIn = action.payload.isSignedIn;
             state.isVerified = action.payload.isVerified;
         },
+        setName(state,action){
+            state.name = action.payload;
+        },
         setId(state,action){
             state.id = action.payload;
         },
@@ -32,4 +35,4 @@ const userSlice = createSlice({
 
 export default userSlice.reducer;
 
-export const { setUser,setId, setSignedIn, setVerified } = userSlice.actions;
+export const { setUser,setId, setSignedIn, setVerified, setName } = userSlice.actions;

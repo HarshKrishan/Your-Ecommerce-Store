@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import app from "../Auth/firebase";
-import {getFirestore,doc, setDoc, addDoc, collection} from "firebase/firestore";
+import {getFirestore,doc, setDoc, addDoc, collection, getDoc, getDocs} from "firebase/firestore";
 
 const database = getFirestore(app);
 // const Users = database.collection("users");
@@ -30,4 +30,25 @@ export async function POST(req){
 
     
     
+}
+
+export async function GET(req){
+
+    const res = await getDocs(collection(database,"Users"));
+    // console.log(res);
+    const data = res.docs.map((doc) => doc.data());
+    console.log("res",data);
+    
+    return NextResponse.json({ message: "This is data",res:data, status: 200 });
+    // if (res.exists()) {
+    //   console.log("Document data:", res.data());
+    //   return NextResponse.json({ message: "User Created", status: 200 });
+    // }
+    // else {
+    //   // doc.data() will be undefined in this case
+    //   console.log("No such document!");
+    //   return NextResponse.json({ message: "Not available!", status: 500 });
+    // }
+
+      
 }

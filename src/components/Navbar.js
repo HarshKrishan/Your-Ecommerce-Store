@@ -27,7 +27,7 @@ const Navbar = () => {
     signOut(auth).then(() => {
       // Sign-out successful.
       dispatch(setSignedIn(false));
-      alert("signout successful, user was: ");
+      alert("signout successful, user was: "+user.name);
     })
     .catch((error) => {
       // An error happened.

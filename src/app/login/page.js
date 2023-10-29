@@ -6,82 +6,127 @@ import {
   signInWithPhoneNumber,
   signOut,
 } from "firebase/auth";
-import {auth} from '../api/Auth/firebase';
+import { auth } from "../api/Auth/firebase";
 import Swal from "sweetalert2";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
+import user from "@/models/user";
+import { setSignedIn, setId, setName } from "@/store/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import {setSignedIn,setId} from "@/store/slices/userSlice";
-import { useDispatch } from "react-redux";
 export const logout = () => {
-  const user =auth.currentUser;
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        alert("signout successful, user was: ", user);
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
+  const user = auth.currentUser;
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+      // alert("signout successful, user was: ", user);
+      toast.success("signout successful, user was: "+ user, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
       });
-  };
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+};
 
 const LoginPage = () => {
   const [number, setNumber] = useState("");
-  const [otp,setotp] = useState("");
-  const [user,setuser] = useState(null);
-  const [showOTP,setshowOTP] = useState(false);
+  const [otp, setotp] = useState("");
+  const [user, setuser] = useState(null);
+  const [showOTP, setshowOTP] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
+  const currUser = useSelector((state) => state.user);
+
+  const notify = () => {
+    toast.success("OTP sent...", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const addUserToDb = async () => {
+    const res = await fetch("/api/addUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: currUser.name,
+        wishList: [],
+        transactions: [],
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
+  };
   const verifyOTP = (e) => {
     e.preventDefault();
-    if(otp.length===6){
+    if (otp.length === 6) {
       // console.log(otp);
-      let  confirmationResult = window.confirmationResult;
-      confirmationResult.confirm(otp).then((result) => {
-        // User signed in successfully.
-        const user = result.user;
-        setuser(user);
-        console.log(user);
-        Swal.fire({
-          title: "Success",
-          text: "You are logged in successfully",
-          icon: "success",
-          confirmButtonText: "Ok",
+      let confirmationResult = window.confirmationResult;
+      confirmationResult
+        .confirm(otp)
+        .then((result) => {
+          // User signed in successfully.
+          const user = result.user;
+          setuser(user);
+          console.log(user);
+          // console.log(user.phoneNumber);
+          Swal.fire({
+            title: "Success",
+            text: "You are logged in successfully",
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+          setNumber("");
+          setotp("");
+          setshowOTP(false);
+          console.log(auth);
+          router.push("/");
+          dispatch(setSignedIn(true));
+          dispatch(setId(user.uid));
+          dispatch(setName(user.phoneNumber));
+          addUserToDb();
+          // ...
+        })
+        .catch((error) => {
+          // User couldn't sign in (bad verification code?)
+          // ...
+          console.log(error);
+          alert("Invalid OTP");
         });
-        setNumber("");
-        setotp("");
-        setshowOTP(false);
-        console.log(auth)
-        router.push("/");
-        dispatch(setSignedIn(true));
-        dispatch(setId(user.uid));
-        // ...
-      }).catch((error) => {
-        // User couldn't sign in (bad verification code?)
-        // ...
-        console.log(error);
-        alert("Invalid OTP")
-      });
     }
-  }
-      
+  };
+
   const generateCaptcha = () => {
     window.recaptchaVerifier = new RecaptchaVerifier(
       "recaptcha-container",
       {
         size: "invisible",
         callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          // alert("captcha resolved");
-          alert("OTP sent...");
+          // alert("OTP sent...");
+          notify();
         },
       },
       auth
     );
-  }
-
-
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,17 +134,28 @@ const LoginPage = () => {
     setshowOTP(true);
     let verifier = window.recaptchaVerifier;
     signInWithPhoneNumber(auth, number, verifier)
-    .then((res) => {
-      
-      window.confirmationResult = res;
-    }).catch((err) => {
-      console.log(err);
-    })
-
+      .then((res) => {
+        window.confirmationResult = res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
     <div className="flex justify-center text-center">
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <div className="border-2 p-5 shadow-md">
         <h1 className="font-bold text-2xl">Your Ecommerce Store</h1>
         <div id="recaptcha-container" className="bg-red-600 w-15 h-15"></div>
