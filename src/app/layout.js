@@ -8,15 +8,16 @@ import store from "@/store/store";
 import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
-  title: "Your E-commerce Store",
-  description: "A store created by nextJs",
-};
+// export const metadata = {
+//   title: "Your E-commerce Store",
+//   description: "A store created by nextJs",
+// };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <title>Your E-commerce Store</title>
         <link
           rel="apple-touch-icon"
           sizes="180x180"
