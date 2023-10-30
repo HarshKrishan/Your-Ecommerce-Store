@@ -24,7 +24,7 @@ export async function POST(request) {
   };
 
   const response = await razorpay.orders.create(options);
-  console.log(response);
+  // console.log(response);
 
 
   return NextResponse.json({message: "success", response,status: 200})

@@ -9,7 +9,7 @@ export async function POST(req){
     // console.log(req);
     try {
       const reqbody = await req.json();
-        console.log("request",reqbody);
+        // console.log("request",reqbody);
     //   console.log(email, password);
         if(!reqbody.email || !reqbody.password){
             return NextResponse.json({ message: "Please fill all the fields" }, { status: 400 });
@@ -23,7 +23,7 @@ export async function POST(req){
 
       return NextResponse.json({ message: "User Created",status: 200 });
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       return NextResponse.json({ error: error, status: 500 });
     }
 
