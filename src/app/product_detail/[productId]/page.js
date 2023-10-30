@@ -129,7 +129,7 @@ const Page = (params) => {
 
           <p>{product?.description}</p>
           <p className="font-bold ">${product?.price}</p>
-          <div className="flex gap-x-2">
+          <div className="flex gap-x-2 flex-col md:flex-row gap-y-1">
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleCheckout}

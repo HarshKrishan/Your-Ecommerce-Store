@@ -15,7 +15,7 @@ const Page = () => {
         dispatch(setZero());
         dispatch(emptyCart());
     }
-    let total = 0;
+    var total = 0;
     product_list.map((product) => {
       total += product.price;
     });

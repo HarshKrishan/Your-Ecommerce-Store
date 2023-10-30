@@ -166,12 +166,12 @@ const LoginPage = () => {
             {!showOTP ? (
               <div>
                 <label
-                  for="mobile"
+                  htmlFor="mobile"
                   className="block font-medium leading-6 text-gray-900 text-xl mt-5"
                 >
                   Enter Your Mobile Number
                 </label>
-                <div class="mt-2">
+                <div className="mt-2">
                   <input
                     id="mobile"
                     name="mobile"
@@ -187,12 +187,12 @@ const LoginPage = () => {
             ) : (
               <div>
                 <label
-                  for="otp"
+                  htmlFor="otp"
                   className="block font-medium leading-6 text-gray-900 text-xl mt-5"
                 >
                   Enter OTP
                 </label>
-                <div class="mt-2">
+                <div className="mt-2">
                   <input
                     id="otp"
                     name="otp"

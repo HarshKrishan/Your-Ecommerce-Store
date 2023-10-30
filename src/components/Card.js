@@ -78,10 +78,10 @@ const Card = (props) => {
           {product.description.substring(0, 150) + "..."}
         </p>
       </div>
-      <div className="flex justify-between mt-10">
-        <p className="text-xl font-bold  absolute bottom-0 m-2">${product.price}</p>
+      <div className="flex justify-between mt-10 flex-col sm:flex-row">
+        <p className="text-xl font-bold  md:absolute md:bottom-0 m-2">${product.price}</p>
         <button
-          className="bg-blue-500 hover:bg-blue-800 text-white font-bold p-2 rounded active:bg-blue-300 absolute bottom-0 right-0 m-2"
+          className="bg-blue-500 hover:bg-blue-800 text-white font-bold p-2 rounded active:bg-blue-300 md:absolute md:bottom-0 md:right-0 m-2"
           onClick={() => addToCart(product)}
         >
           Add to Cart

@@ -311,8 +311,8 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-      <div className="flex justify-center mb-4 md:hidden">
-        <ul className="flex">
+      <div className="flex justify-center mb-4 md:hidden ">
+        <ul className="flex flex-wrap">
           <li className="mx-2 hover:cursor-pointer dropdown font-semibold">
             Electronics
             <div className="hidden dropdown-menu absolute z-10 bg-white font-light">
