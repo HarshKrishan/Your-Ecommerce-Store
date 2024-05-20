@@ -23,7 +23,7 @@ const Products = () => {
   return (
     <div className="flex justify-center flex-col">
       <h1 className="font-bold text-3xl text-center my-10">Our Products</h1>
-      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-4 p-4">
         {products.map((product) => (
           <Card key={product.id} product={product} />
         ))}

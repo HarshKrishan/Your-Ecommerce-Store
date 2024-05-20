@@ -111,7 +111,21 @@ const Page = (params) => {
     }
   };
   return (
-    <div className="flex justify-center w-2/3 h-screen">
+    <div className="flex justify-center w-2/3 h-screen gap-2 p-8">
+      {/* more images of the product */}
+      <div className="flex flex-col gap-2 h-1/2 overflow-y-auto overflow-x-hidden p-1">
+        {product?.images.map((image, index) => (
+          <Image
+            key={index
+            }
+            className="hover:scale-110 transform transition duration-500 ease-in-out my-2"
+            src={image}
+            alt={product?.title}
+            width={100}
+            height={100}
+          />
+        ))}
+      </div>
       <div className="flex justify-between">
         <div>
           <Image

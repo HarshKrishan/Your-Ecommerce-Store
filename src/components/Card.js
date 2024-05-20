@@ -67,7 +67,7 @@ const Card = (props) => {
       <div className="" onClick={() => handleClick(product)}>
         <Image
           className="mx-auto hover:scale-110 transform transition duration-500 ease-in-out my-10"
-          src={product.images[0]}
+          src={product.thumbnail}
           alt={product.title}
           width={150}
           height={190}
