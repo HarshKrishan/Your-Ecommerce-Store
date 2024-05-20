@@ -7,6 +7,7 @@ const nextConfig = {
       "fakestoreapi.com",
       "dummyjson.com",
       "i.dummyjson.com",
+      "cdn.dummyjson.com"
     ],
   },
   
