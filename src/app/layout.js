@@ -7,6 +7,8 @@ import { Provider } from "react-redux";
 import store from "@/store/store";
 import Footer from '@/components/Footer';
 const inter = Inter({ subsets: ['latin'] })
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // export const metadata = {
 //   title: "Your E-commerce Store",
@@ -42,6 +44,8 @@ export default function RootLayout({ children }) {
         <Provider store={store}>
           <Navbar />
           {children}
+          <Analytics />
+          <SpeedInsights />
         </Provider>
         <Footer />
 

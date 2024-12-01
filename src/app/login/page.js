@@ -135,10 +135,11 @@ const LoginPage = () => {
     let verifier = window.recaptchaVerifier;
     signInWithPhoneNumber(auth, number, verifier)
       .then((res) => {
+        console.log("###########################",res);
         window.confirmationResult = res;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$",err);
       });
   };
 

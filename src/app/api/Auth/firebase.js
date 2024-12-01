@@ -12,12 +12,12 @@ const firebaseConfig = {
   apiKey: "AIzaSyCTcHBfXkp5xfwvzlJDEKZqW-QbZvxn2yY",
   authDomain: "your-ecommerce-store.firebaseapp.com",
   projectId: "your-ecommerce-store",
-  storageBucket: "your-ecommerce-store.appspot.com",
+  storageBucket: "your-ecommerce-store.firebasestorage.app",
   messagingSenderId: "387499780023",
   appId: "1:387499780023:web:4793d84dbd9a0f76cdaa32",
   measurementId: "G-JHVFNPD2QB"
 };
-
+// console.log("firebaseConfig: ", firebaseConfig);
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
