@@ -36,6 +36,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|electronics.jpg|clothing.jpg|homeandkitchen.jpg|beauty.jpg|sports.jpg|books.jpg|toysandgames.jpg|automative.jpeg|shopeaselogo.png|login|signup|auth|about|categories|contact|product_detail|products|search|cart).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|electronics.jpg|clothing.jpg|homeandkitchen.jpg|beauty.jpg|sports.jpg|books.jpg|toysandgames.jpg|automotive.jpeg|shopeaselogo.png|login|signup|auth|about|categories|contact|product_detail|products|search|cart).*)",
   ],
 };
