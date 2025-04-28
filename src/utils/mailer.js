@@ -1,4 +1,4 @@
-import User from '@/models/User';
+import User from '@/models/user';
 import nodemailer from 'nodemailer';
 // import bcryptjs from 'bcryptjs';
 import { v4 as uuidv4 } from "uuid";

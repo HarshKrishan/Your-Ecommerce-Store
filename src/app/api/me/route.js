@@ -1,6 +1,6 @@
 // import { connectToDatabase } from "@/lib/mongodb";
 import connectMongodb from "@/libs/connectMongodb";
-import User from "@/models/User";
+import User from "@/models/user";
 import { NextResponse } from "next/server";
 import getDataFromToken from "@/utils/getDataFromToken";
 
