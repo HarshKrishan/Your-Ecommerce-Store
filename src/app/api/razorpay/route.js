@@ -3,7 +3,7 @@ const Razorpay = require("razorpay");
 const shortid = require("shortid");
 
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_ID,
+  key_id: process.env.NEXT_PUBLIC_RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_KEY,
 });
 
@@ -18,7 +18,7 @@ export async function POST(request) {
     receipt: shortid.generate(),
     payment_capture,
     notes: {
-      paymentFor: "Your Ecommerce Store",
+      paymentFor: "ShopEase",
       userId: "1234567890",
     },
   };

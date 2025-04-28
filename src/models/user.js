@@ -1,27 +1,31 @@
-const mongoose = require("mongoose");
-
-const Schema = mongoose.Schema;
-
-const userSchema = new Schema(
-    {
-    userId:{
-        type: String,
-        required: true,
-        trim: true,
-        },
-    wishList: {
-        type: Array,
-        required: true,
-        trim: true,
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    phone: {type:String, required:true, unique:true},
+    password: { type: String, required: true },
+    isAdmin: { type: Boolean, default: false },
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      country: String,
+      postalCode: String,
     },
-    transactions: {
-        type: Array,
-        required: true,
-        trim: true,
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
-},{
+    forgotPasswordToken: String,
+    forgotPasswordTokenExpiry: Date,
+    verifyToken: String,
+    verifyTokenExpiry: Date,
+  },
+  {
     timestamps: true,
-}
+  }
 );
 
 // const User = mongoose.model("User", userSchema);
@@ -33,4 +37,6 @@ try {
 } catch (error) {
   User = mongoose.model('User', userSchema)
 }
-module.exports = User;
+// module.exports = User;
+
+export default User;
