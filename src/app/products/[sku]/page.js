@@ -1,45 +1,53 @@
-'use client'
-import Rating from '@/components/Rating';
-import { Star, StarHalf } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import React, { useState, useEffect } from 'react'
+"use client";
+import Rating from "@/components/Rating";
+import { IndianRupee, Star, StarHalf } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState, useEffect } from "react";
 
-const page = ({params}) => {
-    const sku = params.sku;
+const page = ({ params }) => {
+  const sku = params.sku;
 
-    const[product, setProduct] = useState({});
-    const[images, setImages] = useState([]);
-    const[currImageIndex, setCurrImageIndex] = useState(0);
-    async function getProductDetails(){
-        const res = await fetch('/api/products/'+sku);
-        const data = await res.json();
+  const [product, setProduct] = useState({});
+  const [images, setImages] = useState([]);
+  const [currImageIndex, setCurrImageIndex] = useState(0);
+  async function getProductDetails() {
+    const res = await fetch("/api/products/" + sku);
+    const data = await res.json();
 
-        // console.log(data);
-        setProduct(data[0]);
+    // console.log(data);
+    setProduct(data[0]);
+  }
+
+  useEffect(() => {
+    getProductDetails();
+  }, []);
+
+  useEffect(() => {
+    // console.log("images: ",product.images);
+
+    if (product && product.images && Array.isArray(product.images)) {
+      setImages(product.images);
+      console.log("image: ", product.images[0]);
     }
+  }, [product]);
+  // console.log(product.images);
 
-
-    useEffect(() => {
-      getProductDetails();
-    }, [])
-
-    useEffect(()=>{
-      // console.log("images: ",product.images);
-      
-       if (product && product.images && Array.isArray(product.images)) {
-         setImages(product.images);
-         console.log("image: ", product.images[0]);
-       }
-    }, [product])
-    // console.log(product.images);
-
-  if (!product){
-    return <div className='flex justify-center items-center flex-col my-5'>
-      <h1 className='text-white text-2xl'>Product Not Found</h1>
-      <p className='text-gray-400 text-center my-4'>The product you're looking for doesn't exist or has been removed.</p>
-      <Link href={"/categories"} className='py-2 px-4 bg-white text-black rounded-lg'>Browse Products</Link>
-    </div>
+  if (!product) {
+    return (
+      <div className="flex justify-center items-center flex-col my-5">
+        <h1 className="text-white text-2xl">Product Not Found</h1>
+        <p className="text-gray-400 text-center my-4">
+          The product you're looking for doesn't exist or has been removed.
+        </p>
+        <Link
+          href={"/categories"}
+          className="py-2 px-4 bg-white text-black rounded-lg"
+        >
+          Browse Products
+        </Link>
+      </div>
+    );
   }
   return (
     <div className="container px-4 py-8 md:px-6 md:py-12 bg-black text-white">
@@ -84,13 +92,18 @@ const page = ({params}) => {
             </div>
             <div className="border-b-[0.5px]">
               {product && (
-                <h3 className="font-bold">
-                  $
-                  {((product.price * product.discountPercentage) / 100).toFixed(
-                    2
-                  )}{" "}
-                  <span className="font-normal line-through text-gray-200 ml-2">
-                    ${product.price}
+                <h3 className="font-bold flex">
+                  <span className="flex items-center">
+                    <IndianRupee className="h-4 w-4"></IndianRupee>
+                    {(
+                      (product.price * product.discountPercentage) /
+                      100
+                    ).toFixed(2)}{" "}
+                  </span>
+
+                  <span className="font-normal line-through text-gray-200 ml-2 flex items-center">
+                    <IndianRupee className="h-4 w-4"></IndianRupee>
+                    {product.price}
                   </span>
                 </h3>
               )}
@@ -148,6 +161,6 @@ const page = ({params}) => {
       </div>
     </div>
   );
-}
+};
 
-export default page
+export default page;

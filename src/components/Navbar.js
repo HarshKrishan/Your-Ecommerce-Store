@@ -31,7 +31,7 @@ const Navbar = () => {
     if (e.key === "Enter" && query !== "") {
       const temp = query;
       setQuery("");
-      router.push(`/search/${temp}`);
+      router.push(`/search?q=${temp}`);
     }
   };
 
@@ -549,6 +549,7 @@ const Navbar = () => {
     }
   };
 
+  
   const [showNavbar, setShowNavbar] = useState(false);
   const [showSearchBar, setShowSearchBar] = useState(false);
 
@@ -770,6 +771,9 @@ const Navbar = () => {
                     showSearchBar ? "lg:block" : "hidden"
                   }`}
                   placeholder="Search Products..."
+                  value={query}
+                  onChange={(e)=>setQuery(e.target.value)}
+                  onKeyDown={handlesubmit}
                 />
                 <button onClick={() => setShowSearchBar(false)} className="p-1">
                   X

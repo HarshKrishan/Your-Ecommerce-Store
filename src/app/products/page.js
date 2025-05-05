@@ -1,6 +1,12 @@
 "use client";
 import Card from "@/components/Card";
-import { CircleArrowLeft, CircleArrowRight, Filter, Heart } from "lucide-react";
+import {
+  CircleArrowLeft,
+  CircleArrowRight,
+  Filter,
+  Heart,
+  IndianRupee,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,32 +34,27 @@ const AccordionItem = ({ title, children, isOpen, onClick }) => (
   </div>
 );
 
-const WishListCard = ({product, handleCardClick}) => {
-  
+const WishListCard = ({ product, handleCardClick }) => {
   // const [selected, setSelected] = useState(false);
 
-
-  
-
   const { addProduct, removeProduct, products } = useWishlistStore();
-  const { addToCart} = useCartStore();
-  const isInWishlist = products.some((curr)=> curr.id==product.id)
+  const { addToCart } = useCartStore();
+  const isInWishlist = products.some((curr) => curr.id == product.id);
 
-  const handleHeartClick = ()=>{
-    if(isInWishlist){
-      removeProduct(product.id)
+  const handleHeartClick = () => {
+    if (isInWishlist) {
+      removeProduct(product.id);
       // setSelected(false);
-    }else{
+    } else {
       addProduct(product);
       // setSelected(true);
     }
-  }
+  };
 
-  const handleCartClick = ()=> {
+  const handleCartClick = () => {
     addToCart(product);
-  }
+  };
 
-  
   return (
     <div
       className="rounded-md overflow-hidden bg-black hover:cursor-pointer relative group"
@@ -73,16 +74,20 @@ const WishListCard = ({product, handleCardClick}) => {
         <h3 className="font-bold text-xl truncate">{product.title}</h3>
         <p className="font-light text-gray-200">{product.category}</p>
         <div className="font-bold mt-2 flex items-center">
-          ${product.price}
+          <span className="flex items-center">
+            <IndianRupee className="h-4 w-4"></IndianRupee>
+            {product.price}
+          </span>
           {product.onSale && (
-            <span className="text-gray-200 pl-2 line-through font-normal">
-              ${product.discountedPrice}
+            <span className="text-gray-200 pl-2 line-through font-normal flex items-center">
+              <IndianRupee className="h-4 w-4"></IndianRupee>
+              {product.discountedPrice}
             </span>
           )}
         </div>
         <div className="flex text-black gap-2 mt-4">
           <button
-            onClick={(e)=>{
+            onClick={(e) => {
               e.stopPropagation();
               handleCartClick();
             }}
@@ -96,7 +101,7 @@ const WishListCard = ({product, handleCardClick}) => {
             onClick={(e) => {
               e.stopPropagation();
               handleHeartClick();
-              }}
+            }}
           >
             <Heart
               className={`${isInWishlist ? "text-red-500" : "text-white"}`}
@@ -112,7 +117,8 @@ const WishListCard = ({product, handleCardClick}) => {
         <span className="sr-only">View Product</span>
       </Link> */}
     </div>
-  );};
+  );
+};
 const categoryInfo = {
   electronics: {
     name: "Electronics",
@@ -146,7 +152,7 @@ const categoryInfo = {
   },
 };
 
-const PaginatedItems = ({products, handleCardClick}) => {
+const PaginatedItems = ({ products, handleCardClick }) => {
   const [items, setItems] = useState([]);
   const [currPage, setCurrPage] = useState(1);
 
@@ -160,13 +166,13 @@ const PaginatedItems = ({products, handleCardClick}) => {
   const totalPages = Math.ceil(data.length / diff);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   const [start, setStart] = useState(1);
-  const[end, setEnd] = useState(diff);
+  const [end, setEnd] = useState(diff);
   useEffect(() => {
-     if (data.length === 0) return;
+    if (data.length === 0) return;
 
     const startIndex = (currPage - 1) * diff;
     const endIndex = startIndex + diff;
-    setStart(startIndex+1);
+    setStart(startIndex + 1);
     setEnd(endIndex);
     let temp = data.slice(startIndex, endIndex);
 
@@ -179,14 +185,13 @@ const PaginatedItems = ({products, handleCardClick}) => {
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-4 ">
-        {items.length>0 && items.map((product) => 
-          (
+        {items.length > 0 &&
+          items.map((product) => (
             <WishListCard product={product} handleCardClick={handleCardClick} />
-          )
-        )}
+          ))}
       </div>
-      {
-        items.length >0 ? <div>
+      {items.length > 0 ? (
+        <div>
           {/* <label>Page no.</label>
           <select
             onChange={(e) => {
@@ -206,19 +211,23 @@ const PaginatedItems = ({products, handleCardClick}) => {
               showing: {start} - {Math.min(end, maxLimit)} of {maxLimit}
             </p>
             <div>
-              <button onClick={() => start > 1 && setCurrPage(currPage - 1)} >
-                <CircleArrowLeft className=""/>
+              <button onClick={() => start > 1 && setCurrPage(currPage - 1)}>
+                <CircleArrowLeft className="" />
               </button>
-              <button onClick={() => end < maxLimit && setCurrPage(currPage + 1)}>
+              <button
+                onClick={() => end < maxLimit && setCurrPage(currPage + 1)}
+              >
                 <CircleArrowRight />
               </button>
             </div>
           </div>
-        </div> : <p>Loading....</p>
-      }
+        </div>
+      ) : (
+        <p>Loading....</p>
+      )}
     </>
   );
-}
+};
 
 const Page = (params) => {
   const category = params.params.category;
@@ -227,59 +236,53 @@ const Page = (params) => {
   const [show, setShow] = useState(false);
 
   const router = useRouter();
-  async function getProducts(){
+  async function getProducts() {
     const url = "/api/products/";
-    const res = await fetch(url)
-    const data = await res.json()
-    
+    const res = await fetch(url);
+    const data = await res.json();
+
     setProducts(data);
   }
   useEffect(() => {
     getProducts();
   }, []);
 
+  const [openItem, setOpenItem] = useState(null);
 
-   const [openItem, setOpenItem] = useState(null);
+  const [selectedSubcategories, setSelectedSubcategories] = useState([]);
+  const [priceRange, setPriceRange] = useState({ min: "0", max: "200" });
+  const [showSaleOnly, setShowSaleOnly] = useState(false);
 
-   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
-   const [priceRange, setPriceRange] = useState({ min: "0", max: "200" });
-   const [showSaleOnly, setShowSaleOnly] = useState(false);
+  const handleToggle = (item) => {
+    setOpenItem(openItem === item ? null : item);
+  };
 
-   const handleToggle = (item) => {
-     setOpenItem(openItem === item ? null : item);
-   };
+  const handleSubcategoryChange = (subcategory) => {
+    setSelectedSubcategories((prev) =>
+      prev.includes(subcategory)
+        ? prev.filter((item) => item !== subcategory)
+        : [...prev, subcategory]
+    );
+  };
 
-   const handleSubcategoryChange = (subcategory) => {
-     setSelectedSubcategories((prev) =>
-       prev.includes(subcategory)
-         ? prev.filter((item) => item !== subcategory)
-         : [...prev, subcategory]
-     );
-   };
+  const handlePriceChange = (type, value) => {
+    console.log("type:", type, "value: ", value);
+    setPriceRange((prev) => ({ ...prev, [type]: value }));
+  };
 
-   const handlePriceChange = (type, value) => {
-    console.log("type:", type, "value: ", value)
-     setPriceRange((prev) => ({ ...prev, [type]: value }));
-   };
+  const handleApplyFilters = () => {
+    console.log("Selected Subcategories:", selectedSubcategories);
+    console.log("Price Range:", priceRange);
+    console.log("Show Sale Only:", showSaleOnly);
+  };
 
-   const handleApplyFilters = () => {
-     console.log("Selected Subcategories:", selectedSubcategories);
-     console.log("Price Range:", priceRange);
-     console.log("Show Sale Only:", showSaleOnly);
-   };
+  const handleCardClick = (sku) => {
+    router.push("/products/" + sku);
+  };
 
-
-   const handleCardClick = (sku)=>{
-    router.push('/products/'+sku)
-   }
-
-
-   
   return (
     <div className="bg-black text-white p-4">
       <div className="flex flex-col p-4">
-        
-
         {show && (
           <div
             className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-50"
@@ -530,7 +533,10 @@ const Page = (params) => {
               )}
             </div>
             */}
-            <PaginatedItems products={products} handleCardClick={handleCardClick}/>
+            <PaginatedItems
+              products={products}
+              handleCardClick={handleCardClick}
+            />
           </div>
         </div>
 

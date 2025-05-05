@@ -7,8 +7,10 @@ import { useDispatch } from "react-redux";
 import Hero from "@/components/Hero";
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Search, ShoppingBag } from "lucide-react";
+import { Heart, IndianRupee, Search, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
+import useWishlistStore from "@/store/wishlistStore";
+import useCartStore from "@/store/cartStore";
 
 const Card = () => {
   let cards = [
@@ -84,8 +86,8 @@ const FeaturedCard = () => {
       image:
         "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20AirPods%20Max%20Silver/thumbnail.png",
       onSale: true,
-      discountedPrice: "$99.99",
-      price: "$129.99",
+      discountedPrice: "99.99",
+      price: "129.99",
       link: "categories/electronics",
     },
     {
@@ -95,8 +97,8 @@ const FeaturedCard = () => {
       image:
         "https://cdn.dummyjson.com/products/images/mobile-accessories/Apple%20Watch%20Series%204%20Gold/thumbnail.png",
       onSale: false,
-      discountedPrice: "$129.99",
-      price: "$199.99",
+      discountedPrice: "129.99",
+      price: "199.99",
       link: "categories/electronics",
     },
     {
@@ -106,8 +108,8 @@ const FeaturedCard = () => {
       image:
         "https://cdn.dummyjson.com/products/images/womens-bags/White%20Faux%20Leather%20Backpack/thumbnail.png",
       onSale: true,
-      discountedPrice: "$59.99",
-      price: "$79.99",
+      discountedPrice: "59.99",
+      price: "79.99",
       link: "categories/electronics",
     },
     {
@@ -117,11 +119,35 @@ const FeaturedCard = () => {
       image:
         "https://cdn.dummyjson.com/products/images/smartphones/iPhone%2013%20Pro/thumbnail.png",
       onSale: true,
-      discountedPrice: "$1050.99",
-      price: "$1099.99",
+      discountedPrice: "1050.99",
+      price: "1099.99",
       link: "categories/electronics",
     },
   ];
+
+
+  const { addProduct, removeProduct, products } = useWishlistStore();
+  const { addToCart } = useCartStore();
+  
+
+  const checkIfInList = (product) =>{
+    return products.some((curr) => curr.id == product.id);
+  }
+
+  const handleHeartClick = (product) => {
+    const isInWishlist = checkIfInList(product);
+    if (isInWishlist) {
+      removeProduct(product.id);
+      // setSelected(false);
+    } else {
+      addProduct(product);
+      // setSelected(true);
+    }
+  };
+
+  const handleCartClick = (product) => {
+    addToCart(product);
+  };
   return (
     <div className="">
       <div className="flex flex-col justify-center items-center my-8 w-full">
@@ -131,7 +157,10 @@ const FeaturedCard = () => {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:grid-cols-4 ">
           {featuredCards.map((card) => (
-            <div className="rounded-md overflow-hidden group bg-black" key={card.id}>
+            <div
+              className="rounded-md overflow-hidden group bg-black"
+              key={card.id}
+            >
               <div className=" aspect-square overflow-hidden">
                 <Image
                   src={card.image}
@@ -145,26 +174,45 @@ const FeaturedCard = () => {
                 <h3 className="font-bold text-xl truncate">{card.text}</h3>
                 <p className="font-light text-gray-200">{card.category}</p>
                 <div className="font-bold mt-2 flex items-center">
-                  {!card.onSale ? card.price : card.discountedPrice}
+                  {!card.onSale ? (
+                    <span className="flex items-center">
+                      <IndianRupee className="h-4 w-4"></IndianRupee>{" "}
+                      {card.price}
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <IndianRupee className="h-4 w-4"></IndianRupee>{" "}
+                      {card.discountedPrice}
+                    </span>
+                  )}
                   {card.onSale && (
-                    <span className="text-gray-200 pl-2 line-through font-normal">
+                    <span className="text-gray-200 pl-2 line-through font-normal flex items-center">
+                      <IndianRupee className="h-4 w-4"></IndianRupee>{" "}
                       {card.price}
                     </span>
                   )}
                 </div>
                 <div className="flex text-black gap-2 mt-4">
-                  <Link
+                  <button
                     href="#"
                     className=" w-full px-4 py-2 text-sm bg-slate-200 rounded flex justify-center items-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCartClick(card);
+                    }}
                   >
                     Add to Cart
-                  </Link>
-                  <Link
+                  </button>
+                  <button
                     href="#"
                     className=" shrink-0 p-2 rounded text-white border border-gray-50"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleHeartClick(card);
+                    }}
                   >
                     <Heart />
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
